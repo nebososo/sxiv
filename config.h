@@ -51,6 +51,7 @@ static const bool ANTI_ALIAS = true;
  */
 static const bool ALPHA_LAYER = false;
 
+
 #endif
 #ifdef _THUMBS_CONFIG
 
@@ -58,7 +59,13 @@ static const bool ALPHA_LAYER = false;
 static const int thumb_sizes[] = { 32, 64, 96, 128, 160 };
 
 #endif
+
+/* implies LOAD_DIRECTORIES */
+static const bool LOAD_ALL_IMAGES_IN_DIRECTORY = true;
+static const bool LOAD_DIRECTORIES = true;
+
 #ifdef _MAPPINGS_CONFIG
+
 
 /* keyboard mappings for image and thumbnail mode: */
 static const keymap_t keys[] = {
