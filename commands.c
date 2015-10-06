@@ -443,6 +443,25 @@ bool ci_slideshow(arg_t _)
 	return true;
 }
 
+bool ci_adjust_slideshow(arg_t v)
+{
+	int nv = (img.ss.on? img.ss.delay : 0) + v;
+	if (nv < 0)
+		nv = 0;
+
+	if (!nv) {
+		img.ss.on = false;
+		reset_timeout(slideshow);
+	}
+	else {
+		img.ss.on = true;
+		img.ss.delay = nv;
+		set_timeout(slideshow, img.ss.delay * 1000, true);
+	}
+
+	return true;
+}
+
 bool ct_move_sel(arg_t dir)
 {
 	return tns_move_selection(&tns, dir, prefix);
