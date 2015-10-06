@@ -330,9 +330,10 @@ Bool is_motionnotify(Display *d, XEvent *e, XPointer a)
 	ox = x, oy = y; \
 	break
 
-bool ci_drag(arg_t _)
+bool ci_drag(arg_t toggle)
 {
 	int dx = 0, dy = 0, i, ox, oy, x, y;
+	int left = toggle? 1 : 0;
 	unsigned int ui;
 	bool dragging = true, next = false;
 	XEvent e;
@@ -350,7 +351,10 @@ bool ci_drag(arg_t _)
 		switch (e.type) {
 			case ButtonPress:
 			case ButtonRelease:
-				dragging = false;
+				if (!left)
+					dragging = false;
+				else
+					left--;
 				break;
 			case MotionNotify:
 				x = e.xmotion.x;
