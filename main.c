@@ -863,7 +863,7 @@ int main(int argc, char **argv)
 		if (!S_ISDIR(fstats.st_mode)) {
 			check_add_file(filename, true);
 		} else {
-			if (!options->recursive) {
+			if (!options->recursive && !LOAD_DIRECTORIES) {
 				warn("ignoring directory: %s", filename);
 				continue;
 			}
@@ -872,7 +872,7 @@ int main(int argc, char **argv)
 				continue;
 			}
 			start = fileidx;
-			while ((filename = r_readdir(&dir)) != NULL) {
+			while ((filename = r_readdir(&dir, options->recursive)) != NULL) {
 				check_add_file(filename, false);
 				free((void*) filename);
 			}
