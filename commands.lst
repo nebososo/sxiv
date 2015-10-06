@@ -30,6 +30,7 @@ I_CMD(toggle_antialias)
 I_CMD(toggle_alpha)
 I_CMD(slideshow)
 I_CMD(adjust_slideshow)
+I_CMD(toggle_random)
 
 T_CMD(move_sel)
 T_CMD(reload_all)

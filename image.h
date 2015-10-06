@@ -61,6 +61,7 @@ typedef struct {
 	struct {
 		bool on;
 		int delay;
+                bool random;
 	} ss;
 
 	multi_img_t multi;

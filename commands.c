@@ -462,6 +462,12 @@ bool ci_adjust_slideshow(arg_t v)
 	return true;
 }
 
+bool ci_toggle_random(arg_t _)
+{
+	img.ss.random ^= 1;
+	return true;
+}
+
 bool ct_move_sel(arg_t dir)
 {
 	return tns_move_selection(&tns, dir, prefix);

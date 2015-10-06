@@ -78,6 +78,7 @@ void img_init(img_t *img, win_t *win)
 
 	img->ss.on = options->slideshow > 0;
 	img->ss.delay = options->slideshow > 0 ? options->slideshow : SLIDESHOW_DELAY;
+	img->ss.random = SLIDESHOW_RANDOM;
 }
 
 #if HAVE_LIBEXIF

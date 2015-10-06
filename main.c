@@ -33,6 +33,7 @@
 #include <sys/wait.h>
 #include <X11/keysym.h>
 #include <X11/XF86keysym.h>
+#include <time.h>
 
 #include "types.h"
 #include "commands.h"
@@ -396,8 +397,11 @@ void update_info(void)
 		bar_put(r, "%s%0*d/%d", mark, fw, fileidx + 1, filecnt);
 	} else {
 		bar_put(r, "%s", mark);
-		if (img.ss.on)
+		if (img.ss.on) {
+			if (img.ss.random)
+				bar_put(r, "random ");
 			bar_put(r, "%ds | ", img.ss.delay);
+		}
 		if (img.gamma != 0)
 			bar_put(r, "G%+d | ", img.gamma);
 		bar_put(r, "%3d%% | ", (int) (img.zoom * 100.0));
@@ -474,7 +478,14 @@ void animate(void)
 
 void slideshow(void)
 {
-	load_image(fileidx + 1 < filecnt ? fileidx + 1 : 0);
+	int next = fileidx;
+	if (!img.ss.random)
+		next = (fileidx+1) % filecnt;
+	else if (filecnt > 1)
+		while (next == fileidx)
+			next = rand() % filecnt;
+
+	load_image(next);
 	redraw();
 }
 
@@ -807,6 +818,8 @@ int main(int argc, char **argv)
 	r_dir_t dir;
 
 	signal(SIGPIPE, SIG_IGN);
+
+        srand(time(NULL));
 
 	parse_options(argc, argv);
 
