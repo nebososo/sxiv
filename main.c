@@ -863,7 +863,7 @@ int main(int argc, char **argv)
 		if (!S_ISDIR(fstats.st_mode)) {
 			check_add_file(filename, true);
 		} else {
-			if (!options->recursive && !LOAD_DIRECTORIES) {
+			if (!options->recursive && !LOAD_DIRECTORIES && !LOAD_ALL_IMAGES_IN_DIRECTORY) {
 				warn("ignoring directory: %s", filename);
 				continue;
 			}

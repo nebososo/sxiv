@@ -58,9 +58,12 @@ static const bool ALPHA_LAYER = false;
 static const int thumb_sizes[] = { 32, 64, 96, 128, 160 };
 
 #endif
-#ifdef _MAPPINGS_CONFIG
 
+/* implies LOAD_DIRECTORIES */
+static const bool LOAD_ALL_IMAGES_IN_DIRECTORY = false;
 static const bool LOAD_DIRECTORIES = false;
+
+#ifdef _MAPPINGS_CONFIG
 
 /* keyboard mappings for image and thumbnail mode: */
 static const keymap_t keys[] = {

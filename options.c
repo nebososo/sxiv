@@ -42,6 +42,39 @@ void print_version(void)
 	printf("sxiv %s - Simple X Image Viewer\n", VERSION);
 }
 
+int fncmp2(const void *a, const void *b)
+{
+	return strcoll(*((const char **) a), *((const char **) b));
+}
+
+
+void filestodirs()
+{
+	int i, j, l, good;
+
+	for (i = 0; i < _options.filecnt; i++) {
+		l = strlen(_options.filenames[i]);
+
+		for (j = l-1; j >= 0 && _options.filenames[i][j] != '/'; j--)
+			_options.filenames[i][j] = 0;
+
+		if (j < 0)
+			_options.filenames[i][0] = '.';
+	}
+
+	qsort(_options.filenames, _options.filecnt, sizeof(char *), fncmp2);
+
+	good = 1;
+
+	for (i = 1; i < _options.filecnt; i++) {
+		if (strcoll(_options.filenames[i], _options.filenames[i-1])) {
+			_options.filenames[good++] = _options.filenames[i];
+		}
+	}
+
+	_options.filecnt = good;
+}
+
 void parse_options(int argc, char **argv)
 {
 	int n, opt;
@@ -168,5 +201,8 @@ void parse_options(int argc, char **argv)
 		_options.filenames++;
 		_options.filecnt--;
 		_options.from_stdin = true;
+	}
+	else if (LOAD_ALL_IMAGES_IN_DIRECTORY) {
+		filestodirs();
 	}
 }

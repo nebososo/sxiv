@@ -55,6 +55,9 @@ extern const options_t *options;
 void print_usage(void);
 void print_version(void);
 
+int fncmp2(const void *, const void *);
+void filestodirs();
+
 void parse_options(int, char**);
 
 #endif /* OPTIONS_H */
