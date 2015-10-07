@@ -23,6 +23,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/stat.h>
 
 #include "options.h"
 #include "util.h"
@@ -51,15 +52,26 @@ int fncmp2(const void *a, const void *b)
 void filestodirs()
 {
 	int i, j, l, good;
+	struct stat fstats;
 
 	for (i = 0; i < _options.filecnt; i++) {
 		l = strlen(_options.filenames[i]);
+		if (stat(_options.filenames[i], &fstats) < 0)
+			continue;
+
+		if (S_ISDIR(fstats.st_mode)) {
+			if (l > 1 && _options.filenames[i][l-1] == '/')
+				_options.filenames[i][l-1] = 0;
+			continue;
+		}
 
 		for (j = l-1; j >= 0 && _options.filenames[i][j] != '/'; j--)
 			_options.filenames[i][j] = 0;
 
 		if (j < 0)
 			_options.filenames[i][0] = '.';
+		else if (j > 0)
+			_options.filenames[i][j] = 0;
 	}
 
 	qsort(_options.filenames, _options.filecnt, sizeof(char *), fncmp2);
