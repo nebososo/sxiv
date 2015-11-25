@@ -115,7 +115,6 @@ static const keymap_t keys[] = {
 	{ 0,            XK_space,         i_navigate,           +1 },
 	{ 0,            XK_p,             i_navigate,           -1 },
 	{ 0,            XK_p,             i_scroll_to_edge,     DIR_LEFT | DIR_UP },
-	{ 0,            XK_BackSpace,     i_navigate,           -1 },
 	{ 0,            XK_bracketright,  i_navigate,           +10 },
 	{ 0,            XK_bracketleft,   i_navigate,           -10 },
 	{ ControlMask,  XK_6,             i_alternate,          None },
