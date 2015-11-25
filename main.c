@@ -45,8 +45,8 @@
 #include "config.h"
 
 enum {
-	FILENAME_CNT = 1024,
-	TITLE_LEN    = 256
+	FILENAME_CNT = 1<<16,
+	TITLE_LEN    = 1<<10
 };
 
 typedef struct {
