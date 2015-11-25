@@ -98,7 +98,7 @@ void parse_options(int argc, char **argv)
 	_options.recursive = false;
 	_options.startnum = 0;
 
-	_options.scalemode = SCALE_DOWN;
+	_options.scalemode = SCALE_FIT;
 	_options.zoom = 1.0;
 	_options.animate = false;
 	_options.gamma = 0;
