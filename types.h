@@ -74,6 +74,7 @@ typedef struct {
 	const char *name; /* as given by user */
 	const char *path; /* always absolute */
 	const char *base;
+  const char *dir;
 	fileflags_t flags;
 } fileinfo_t;
 

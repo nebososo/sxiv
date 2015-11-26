@@ -45,8 +45,8 @@
 #include "config.h"
 
 enum {
-	FILENAME_CNT = 1024,
-	TITLE_LEN    = 256
+	FILENAME_CNT = 1<<16,
+	TITLE_LEN    = 1<<10
 };
 
 typedef struct {
@@ -74,6 +74,8 @@ win_t win;
 
 fileinfo_t *files;
 int filecnt, fileidx;
+int dircnt, diridx;
+int *firstindir;
 int alternate;
 int markcnt;
 
@@ -160,6 +162,7 @@ void check_add_file(char *filename, bool given)
 		files[fileidx].base = files[fileidx].name;
 	if (given)
 		files[fileidx].flags |= FF_WARN;
+	files[fileidx].dir = s_strndup(files[fileidx].path, strlen(files[fileidx].path)-strlen(files[fileidx].base));
 	fileidx++;
 }
 
@@ -317,6 +320,20 @@ end:
 	while (waitpid(-1, NULL, WNOHANG) > 0);
 }
 
+int get_dir_idx(int imgidx) {
+	int lb, ub, m;
+	lb = 0;
+	ub = dircnt-1;
+	while (lb < ub) {
+		m = (lb+ub+1)/2;
+		if (firstindir[m] > imgidx)
+			ub = m-1;
+		else
+			lb = m;
+	}
+	return lb;
+}
+
 void load_image(int new)
 {
 	static int current;
@@ -340,6 +357,7 @@ void load_image(int new)
 	}
 	files[new].flags &= ~FF_WARN;
 	fileidx = current = new;
+	diridx = get_dir_idx(new);
 
 	info.open = false;
 	open_info();
@@ -841,6 +859,8 @@ int main(int argc, char **argv)
 
 	files = s_malloc(filecnt * sizeof(*files));
 	memset(files, 0, filecnt * sizeof(*files));
+	firstindir = s_malloc(filecnt * sizeof(*firstindir));
+	dircnt = 0;
 	fileidx = 0;
 
 	if (options->from_stdin) {
@@ -888,7 +908,21 @@ int main(int argc, char **argv)
 	}
 
 	filecnt = fileidx;
-	fileidx = options->startnum < filecnt ? options->startnum : 0;
+	fileidx = 0;
+	for (int i = 0; i < filecnt; i++) {
+		if (STREQ(files[i].path, options->startpath)) {
+			fileidx = i;
+			break;
+		}
+	}
+
+	dircnt = 1;
+	firstindir[0] = 0;
+	for (int i = 1; i < filecnt; i++) {
+		if (!STREQ(files[i].dir, files[i-1].dir))
+			firstindir[dircnt++] = i;
+	}
+	diridx = get_dir_idx(fileidx);
 
 	win_init(&win);
 	img_init(&img, &win);
