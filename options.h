@@ -30,6 +30,7 @@ typedef struct {
 	bool recursive;
 	int filecnt;
 	int startnum;
+	char *startpath;
 
 	/* image: */
 	scalemode_t scalemode;

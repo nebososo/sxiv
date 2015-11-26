@@ -208,6 +208,15 @@ void parse_options(int argc, char **argv)
 
 	_options.filenames = argv + optind;
 	_options.filecnt = argc - optind;
+#if defined _BSD_SOURCE || defined _XOPEN_SOURCE && \
+		((_XOPEN_SOURCE - 0) >= 500 || defined _XOPEN_SOURCE_EXTENDED)
+	_options.startpath = realpath(_options.filenames[_options.startnum], NULL);
+#else
+	if (*filename != '/')
+		_options.startpath = absolute_path(_options.filenames[_options.startnum]);
+	else
+		_options.startpath = strdup(_options.filenames[_options.startnum]);
+#endif
 
 	if (_options.filecnt == 1 && STREQ(_options.filenames[0], "-")) {
 		_options.filenames++;

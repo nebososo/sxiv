@@ -908,7 +908,13 @@ int main(int argc, char **argv)
 	}
 
 	filecnt = fileidx;
-	fileidx = options->startnum < filecnt ? options->startnum : 0;
+	fileidx = 0;
+	for (int i = 0; i < filecnt; i++) {
+		if (STREQ(files[i].path, options->startpath)) {
+			fileidx = i;
+			break;
+		}
+	}
 
 	dircnt = 1;
 	firstindir[0] = 0;
