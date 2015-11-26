@@ -67,6 +67,22 @@ char* s_strdup(const char *s)
 	return d;
 }
 
+char* s_strndup(const char *s, size_t n)
+{
+	char *d = NULL;
+	size_t len = strlen(s);
+	n = MIN(n, len)+1;
+
+	if (s != NULL) {
+		d = malloc(n);
+		if (d == NULL)
+			die("could not allocate memory");
+		strncpy(d, s, n);
+		d[n-1] = 0;
+	}
+	return d;
+}
+
 void warn(const char* fmt, ...)
 {
 	va_list args;

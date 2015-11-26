@@ -49,6 +49,8 @@ extern win_t win;
 
 extern fileinfo_t *files;
 extern int filecnt, fileidx;
+extern int dircnt, diridx;
+extern int *firstindir;
 extern int alternate;
 extern int markcnt;
 
@@ -273,6 +275,23 @@ bool ci_navigate(arg_t n)
 	n = (n+fileidx) % filecnt;
         if (n < 0)
 		n += filecnt;
+
+	if (n != fileidx) {
+		load_image(n);
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool ci_navigate_dir(arg_t n)
+{
+	if (prefix > 0)
+		n *= prefix;
+	n = (n+diridx) % dircnt;
+	if (n < 0)
+		n += dircnt;
+	n = firstindir[n];
 
 	if (n != fileidx) {
 		load_image(n);
