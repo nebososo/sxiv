@@ -149,6 +149,9 @@ static const keymap_t keys[] = {
 
 	{ 0,            XK_Right,         i_navigate,           +1 },
 	{ 0,            XK_Left,          i_navigate,           -1 },
+	{ 0,            XK_j,         i_navigate_dir,           -1 },
+	{ 0,            XK_k,         i_navigate_dir,           +1 },
+	{ 0,            XK_numbersign,         i_navigate_dir,           +1 },
 	{ 0,            XK_Page_Up,       g_zoom,               +1 },
 	{ 0,            XK_Page_Down,     g_zoom,               -1 },
 	{ 0,            XK_BackSpace,     i_fit_to_win,         SCALE_FIT },
