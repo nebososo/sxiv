@@ -418,7 +418,7 @@ void update_info(void)
 		if (img.ss.on) {
 			if (img.ss.random)
 				bar_put(r, "random ");
-			bar_put(r, "%ds | ", img.ss.delay);
+			bar_put(r, "%ds | ", abs(img.ss.delay));
 		}
 		if (img.gamma != 0)
 			bar_put(r, "G%+d | ", img.gamma);
@@ -450,7 +450,7 @@ void redraw(void)
 	if (mode == MODE_IMAGE) {
 		img_render(&img);
 		if (img.ss.on) {
-			t = img.ss.delay * 1000;
+			t = abs(img.ss.delay) * 1000;
 			if (img.multi.cnt > 0 && img.multi.animate)
 				t = MAX(t, img.multi.length);
 			set_timeout(slideshow, t, false);
